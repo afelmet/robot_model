@@ -13,8 +13,8 @@ namespace robot_model
  */
 struct MimicJoint
 {
-    MimicJoint( std::string joint_to_mimic = "", double multiplier = 1, double offset = 0 )
-                : joint_to_mimic( joint_to_mimic ), multiplier( multiplier ), offset( offset ) { }
+    MimicJoint( std::string _joint_to_mimic = "", double _multiplier = 1, double _offset = 0 )
+                : joint_to_mimic( _joint_to_mimic ), multiplier( _multiplier ), offset( _offset ) { }
 
     std::string joint_to_mimic;
     double multiplier;

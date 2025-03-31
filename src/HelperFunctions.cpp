@@ -39,9 +39,9 @@ urdf::Pose toURDFPose(KDL::Frame frame)
     return urdf_pose;
 }
 
-void KDLFrameToEigenMatrix(KDL::Frame &frame,Eigen::Isometry3f &transform)
+void KDLFrameToEigenMatrix(KDL::Frame &frame, Eigen::Isometry3d &transform)
 {
-    transform.translation() <<frame.p.x() ,frame.p.y() ,frame.p.z();
+    transform.translation() << frame.p.x(), frame.p.y(), frame.p.z();
     transform(0,0)=frame.M(0,0);
     transform(0,1)=frame.M(0,1);
     transform(0,2)=frame.M(0,2);

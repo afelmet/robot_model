@@ -23,18 +23,21 @@ pkg_check_modules(BASE_TYPES REQUIRED base_types)
 pkg_search_module(BASE_LOGGING REQUIRED base_logging)
 
 set(ROBOTMODEL_LIB_INCLUDES 
-    ${CMAKE_SOURCE_DIR}/include 
-    ${EIGEN3_INCLUDE_DIR}
-    ${OROCOS_KDL_INCLUDE_DIRS} 
-    ${KDL_PARSER_INCLUDE_DIRS}
-    ${URDF_INCLUDE_DIRS} 
-    ${URDFHEADER_INCLUDE_DIRS} 
-    ${SRDF_INCLUDE_DIRS}
-    ${OCTOMAP_INCLUDE_DIRS} 
-    ${KINEMATICS_INCLUDE_DIRS} 
+    ${CMAKE_SOURCE_DIR}/include
+    ${KINEMATICS_INCLUDE_DIRS}
     ${COLLISION_DETECTION_INCLUDE_DIRS}
-    ${BASE_TYPES_INCLUDE_DIRS} 
+    ${BASE_TYPES_INCLUDE_DIRS}
     ${BASE_LOGGING_INCLUDE_DIRS}
+)
+
+set(ROBOTMODEL_LIB_THIRD_PARTY_INCLUDES
+    ${EIGEN3_INCLUDE_DIR}
+    ${OROCOS_KDL_INCLUDE_DIRS}
+    ${KDL_PARSER_INCLUDE_DIRS}
+    ${URDF_INCLUDE_DIRS}
+    ${URDFHEADER_INCLUDE_DIRS}
+    ${SRDF_INCLUDE_DIRS}
+    ${OCTOMAP_INCLUDE_DIRS}
 )
 
 # set(ROBOTMODEL_LINK_DIRS ${OROCOS_KDL_LIBRARY_DIRS} ${KDL_PARSER_LIBRARY_DIRS}
@@ -59,6 +62,9 @@ set(ROBOTMODEL_DEP_LIBS
     ${BASE_LOGGING_LIBRARY}
 )
 
+# Enable all warnings for space-qualification
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -Wshadow -Wfloat-equal -Wnull-dereference -Wformat -Wcast-align -Wpointer-arith -Wunused-result")
+
 # include_directories(${ROBOTMODEL_LIB_INCLUDES})
 
 # link_directories(${ROBOTMODEL_LINK_DIRS})
@@ -73,6 +79,9 @@ target_include_directories(robot_model PUBLIC
     ${ROBOTMODEL_LIB_INCLUDES}
 )
 
+target_include_directories(robot_model SYSTEM PUBLIC
+    ${ROBOTMODEL_LIB_THIRD_PARTY_INCLUDES}
+)
 # target_link_libraries(robot_model PUBLIC 
 #     ${ROBOTMODEL_DEP_LIBS}
 #     ${Boost_SYSTEM_LIBRARY} 

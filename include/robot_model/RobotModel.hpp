@@ -261,7 +261,7 @@ class RobotModel
         
         bool initializeLinksCollisions();
 
-        void kdlFrameToEigenMatrix(KDL::Frame &frame,Eigen::Isometry3f &transform);
+        void kdlFrameToEigenMatrix(KDL::Frame &frame,Eigen::Isometry3d &transform);
         
         bool getPlanningGroup(const std::string &planning_group_name,  std::string &base_link, std::string &tip_link, 
                               KDL::Chain &kdl_chain) const;
