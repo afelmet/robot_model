@@ -24,18 +24,18 @@ void RobotLink::calculateLinkVisualsPoseInGlobalPose( )
     KDL::Frame visual_global_pose;
     double x,y,z,w;
 
-    for(std::size_t i = 0; i < link_visuals_.size(); i++)
+    for(urdf::Visual &visual : link_visuals_)
     {
-        visual_global_pose = getLinkFrame() * toKdl(link_visual_relative_pose_[i] );
+        visual_global_pose = getLinkFrame() * toKdl(visual.origin);
         visual_global_pose.M.GetQuaternion(x,y,z,w);
 
-        link_visuals_.at(i).origin.position.x = visual_global_pose.p.x();
-        link_visuals_.at(i).origin.position.y = visual_global_pose.p.y();
-        link_visuals_.at(i).origin.position.z = visual_global_pose.p.z();
-        link_visuals_.at(i).origin.rotation.w = w;
-        link_visuals_.at(i).origin.rotation.x = x;
-        link_visuals_.at(i).origin.rotation.y = y;
-        link_visuals_.at(i).origin.rotation.z = z;
+        visual.origin.position.x = visual_global_pose.p.x();
+        visual.origin.position.y = visual_global_pose.p.y();
+        visual.origin.position.z = visual_global_pose.p.z();
+        visual.origin.rotation.w = w;
+        visual.origin.rotation.x = x;
+        visual.origin.rotation.y = y;
+        visual.origin.rotation.z = z;
     }
 }
 
@@ -43,46 +43,46 @@ void RobotLink::calculateLinkCollisionPoseinGlobalPose( )
 {
     KDL::Frame collision_global_pose;
     double x,y,z,w;
-    for(std::size_t i = 0; i < link_collisions_.size(); i++)
+    for(urdf::Collision &collision : link_collisions_)
     {
-        collision_global_pose = getLinkFrame() * toKdl(link_collision_relative_pose_[i]);
+        collision_global_pose = getLinkFrame() * toKdl(collision.origin);
         collision_global_pose.M.GetQuaternion(x,y,z,w);
 
-        link_collisions_.at(i).origin.position.x = collision_global_pose.p.x();
-        link_collisions_.at(i).origin.position.y = collision_global_pose.p.y();
-        link_collisions_.at(i).origin.position.z = collision_global_pose.p.z();
-        link_collisions_.at(i).origin.rotation.w = w;
-        link_collisions_.at(i).origin.rotation.x = x;
-        link_collisions_.at(i).origin.rotation.y = y;
-        link_collisions_.at(i).origin.rotation.z = z;
+        collision.origin.position.x = collision_global_pose.p.x();
+        collision.origin.position.y = collision_global_pose.p.y();
+        collision.origin.position.z = collision_global_pose.p.z();
+        collision.origin.rotation.w = w;
+        collision.origin.rotation.x = x;
+        collision.origin.rotation.y = y;
+        collision.origin.rotation.z = z;
     }
 }
 
 std::vector<urdf::VisualSharedPtr > RobotLink::getLinkVisuals()
 {
     std::vector<urdf::VisualSharedPtr >  link_visuals_shared_ptr;
-    for(std::size_t i = 0; i < link_visuals_.size(); i++ )
+    for(const urdf::Visual &visual : link_visuals_)
     {
-        link_visuals_shared_ptr.push_back(urdf::VisualSharedPtr(new urdf::Visual(link_visuals_.at(i)))  );
+        link_visuals_shared_ptr.push_back(urdf::VisualSharedPtr(new urdf::Visual(visual))  );
     }
     return link_visuals_shared_ptr;
 }
 
 void RobotLink::setLinkVisuals( std::vector<urdf::VisualSharedPtr > &links)
 {
-    for(std::size_t i = 0; i < links.size(); i++)
+    for(const urdf::VisualSharedPtr &link : links)
     {
-        link_visuals_.push_back(*(links.at(i).get())) ;
-        link_visual_relative_pose_.push_back(links.at(i)->origin);
+        link_visuals_.push_back(*(link.get())) ;
+        link_visual_relative_pose_.push_back(link->origin);
     }
 }
 
 void RobotLink::setLinkCollisions( std::vector<urdf::CollisionSharedPtr > &links)
 {
-    for(std::size_t i = 0; i < links.size(); i++)
+    for(const urdf::CollisionSharedPtr &link : links)
     {
-        link_collisions_.push_back( *(links.at(i).get()) );
-        link_collision_relative_pose_.push_back(links.at(i)->origin);
+        link_collisions_.push_back( *(link.get()) );
+        link_collision_relative_pose_.push_back(link->origin);
     }
 }
 
@@ -94,9 +94,9 @@ void RobotLink::setLinkCollision( const urdf::CollisionSharedPtr &link_collision
 
 void RobotLink::getLinkVisuals(std::vector<urdf::VisualSharedPtr > &link_visuals )
 {
-    for(std::size_t i = 0; i < link_visuals_.size();i++)
+    for(const urdf::Visual &visual : link_visuals_)
     {
-        link_visuals.push_back( urdf::VisualSharedPtr(new urdf::Visual(link_visuals_.at(i))) );
+        link_visuals.push_back( urdf::VisualSharedPtr(new urdf::Visual(visual)) );
     }
 }
 
@@ -105,9 +105,9 @@ std::vector<urdf::CollisionSharedPtr > RobotLink::getLinkCollisions()
     //return this->link_collisions;
     std::vector<urdf::CollisionSharedPtr > link_collisions_share_ptr;
 
-    for(std::size_t i = 0; i < link_collisions_.size();i++)
+    for(const urdf::Collision &collision : link_collisions_)
     {
-        link_collisions_share_ptr.push_back( urdf::CollisionSharedPtr(new urdf::Collision(link_collisions_.at(i)))  );
+        link_collisions_share_ptr.push_back( urdf::CollisionSharedPtr(new urdf::Collision(collision))  );
     }
     return link_collisions_share_ptr;
 }
