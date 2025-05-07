@@ -9,6 +9,7 @@ set(TARGET_NAME ${PROJECT_NAME})
 find_package(Eigen3 REQUIRED)
 find_package(Threads REQUIRED)
 find_package(Boost COMPONENTS system filesystem REQUIRED)
+find_package(yaml-cpp REQUIRED)
 
 include(FindPkgConfig)
 pkg_check_modules(OROCOS_KDL REQUIRED orocos_kdl)
@@ -38,6 +39,7 @@ set(ROBOTMODEL_LIB_THIRD_PARTY_INCLUDES
     ${URDFHEADER_INCLUDE_DIRS}
     ${SRDF_INCLUDE_DIRS}
     ${OCTOMAP_INCLUDE_DIRS}
+    ${YAML_CPP_INCLUDE_DIR}
 )
 
 # set(ROBOTMODEL_LINK_DIRS ${OROCOS_KDL_LIBRARY_DIRS} ${KDL_PARSER_LIBRARY_DIRS}
@@ -48,6 +50,7 @@ set(ROBOTMODEL_LIB_THIRD_PARTY_INCLUDES
 set(ROBOTMODEL_DEP_LIBS 
     Threads::Threads
     Eigen3::Eigen 
+    yaml-cpp::yaml-cpp
     ${Boost_SYSTEM_LIBRARY} 
     ${Boost_FILESYSTEM_LIBRARY}
     ${OROCOS_KDL_LIBRARIES} 
